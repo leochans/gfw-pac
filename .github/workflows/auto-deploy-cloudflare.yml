@@ -2,9 +2,7 @@ name: Deploy to Cloudflare Workers Assets
 
 on:
   schedule:
-    - cron: "50 4 * * 4"
-  push:
-    branches: [ master ]
+    - cron: "18 16 * * WED"
   workflow_dispatch:  # 也允许手动触发
 
 jobs:
