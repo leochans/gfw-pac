@@ -1,0 +1,28 @@
+name: Deploy to EdgeOne pages
+
+on:
+  schedule:
+    - cron: "23 16 * * WED"
+  workflow_dispatch:  # 也允许手动触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download the latest cn.txt
+        run: curl -L https://raw.githubusercontent.com/Loyalsoldier/geoip/release/text/cn.txt -o cidrs-cn.txt
+
+      - name: Run generation script
+        run: |
+          mkdir -p dist
+          ./gfw-pac.py -f dist/proxy.pac -p "SOCKS5 127.0.0.1:7890; PROXY 127.0.0.1:7890" --proxy-domains=proxy-domains.txt --direct-domains=direct-domains.txt --localtld-domains=local-tlds.txt --ip-file=cidrs-cn.txt
+
+      - name: Deploy to EdgeOne Pages
+        uses: TencentEdgeOne/edgeone-pages-action@v1
+        with:
+          token: ${{ secrets.EDGEONE_API_TOKEN }}
+          project-name: "gfw-pac"   # EdgeOne Pages 上的项目名称，不存在会自动创建
+          build-path: "./dist"         # 静态产物所在目录，按实际填写
