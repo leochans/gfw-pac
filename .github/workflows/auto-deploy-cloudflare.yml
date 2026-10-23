@@ -18,7 +18,7 @@ jobs:
       - name: Run generation script
         run: |
           mkdir -p dist
-          ./gfw-pac.py -f dist/proxy.pac -p "SOCKS5 127.0.0.1:7890; PROXY 127.0.0.1:7890" --proxy-domains=proxy-domains.txt --direct-domains=direct-domains.txt --localtld-domains=local-tlds.txt --ip-file=cidrs-cn.txt
+          ./gfw-pac.py -f dist/proxy.pac -p "SOCKS5 127.0.0.1:7890; PROXY 127.0.0.1:7890" --proxy-domains=proxy-domains.txt --direct-domains=direct-domains.txt --localtld-domains=local-tlds.txt --ip-file=cidrs-cn.txt --encoding GBK
 
       - name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
