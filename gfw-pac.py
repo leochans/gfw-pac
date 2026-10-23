@@ -22,6 +22,8 @@ def parse_args():
                         help='本地 TLD 规则文件, 不走代理, 每行一个，以 . 开头')
     parser.add_argument('--ip-file', dest='ip_file', required=True,
                         help='中国IP地址段文件')
+    parser.add_argument('--encoding', dest='encoding', default='UTF-8',
+                        help='输出文件编码 (默认: UTF-8)')
     return parser.parse_args()
 
 def convert_cidr(cidr):
@@ -172,7 +174,7 @@ def main():
     # domains = reduce_domains(domains)
     pac_content = generate_pac_fast(user_rule, args.proxy, direct_rule, cidrs, localtld_rule)
 
-    with open(args.output, 'w', encoding='UTF-8') as f:
+    with open(args.output, 'w', encoding=args.encoding) as f:
         f.write(pac_content)
 
 
